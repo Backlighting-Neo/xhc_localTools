@@ -1,0 +1,7 @@
+{
+  "data": [{
+    "url": "/api2/store/product_detail",
+    "name": "商城-商品详情",
+    "filename": "product_detail.json"
+  }]
+}
