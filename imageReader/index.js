@@ -24,18 +24,28 @@ app.get('/imageReader/:url', (req, res) => {
         .end();
       return;
     } else {
-      var patt = new RegExp("jqimg=\'.*?\'", "g");
-      var sourceCode = body;
-      var imageList = sourceCode.match(patt);
+      var patt = new RegExp("http://p0.jmstatic.com/product/.*?.jpg", "g");
+      var resultList = [];
+      imageList = body.match(patt);
+      var imageListLength = imageList==null?0:imageList.length;
 
-      for (var i = 0; i < imageList.length; i++) {
-        imageList[i] = imageList[i].replace('jqimg=', '').replace(/\'/g, '');
+      for (var i = 0; i < imageListLength; i++) {
+        var url = imageList[i];
+        var sizePatt = /(\d+)_(\d+).jpg/.exec(url),
+            width = sizePatt[1],
+            height = sizePatt[2];
+        if(parseInt(width)+parseInt(height)>300){
+          resultList.push({
+            imgUrl: url,
+            width,height
+          });
+        }
       };
 
       res.status(200)
       .json({
       	code: 0,
-      	imageList
+      	resultList
       })
       .end();
     }
